@@ -3,6 +3,7 @@ version: "0.1"
 services:
   elora:
     image: nondetalle/elora:0.2
+    build: ./build
     network_mode: "host"
     cap_add:
       - NET_ADMIN

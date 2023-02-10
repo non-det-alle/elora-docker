@@ -32,11 +32,8 @@ RUN apt-get update --yes && \
     cmake \
     ninja-build \
     git \
-    # Optional for build optimization
-    ccache \
     # Required by elora
     libcurl4-gnutls-dev \
-    libboost-math-dev \
     python3-toml && \
     # Cleanup
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -48,26 +45,23 @@ ENV HOME="/home/elora" \
     # Output directory
     OUTPUT="/home/elora/data"
 
-################################################################### HOME DIR
-
-WORKDIR "${HOME}"
-
 # Install ns-3 with curl support and elora, and build
-RUN git clone https://gitlab.com/non-det-alle/ns-3-dev.git && \
-    cd ns-3-dev/src && \
-    git clone https://github.com/non-det-alle/lorawan.git && \
-    cd .. && \
-    ./ns3 configure -d optimized --enable-logs --disable-warnings --enable-modules lorawan && \
-    ./ns3 build && \
-    cd ..
-
-# Setup home, data, and elora directories
-RUN mkdir -p "${HOME}/data" \
-    "${NS3DIR}/scratch/elora"
+COPY ns-3-dev ${NS3DIR}
+COPY lorawan ${NS3DIR}/src/lorawan
+# Configure ns-3 to only build lorawan and dependencies to save disk space
+RUN ${NS3DIR}/./ns3 configure \
+    -d optimized \
+    --enable-logs \ 
+    --disable-warnings \
+    --enable-modules lorawan && \
+    # Build ns3
+    ${NS3DIR}/./ns3 build && \
+    # Setup home, data, and elora directories
+    mkdir -p "${HOME}/data" "${NS3DIR}/scratch/elora"
 
 # Configure container startup
 ENTRYPOINT ["tini", "-g", "--"]
 CMD ["start.py"]
 
-# Copy local files as late as possible to avoid cache busting
+# Copy pther files as late as possible to avoid cache busting
 COPY start.py /usr/local/bin/

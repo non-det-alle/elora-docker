@@ -43,6 +43,10 @@ main(int argc, char* argv[])
      *  Simulation parameters  *
      ***************************/
 
+    std::string tenant = "ELoRa";
+    std::string api = "127.0.0.1";
+    std::string token = "";
+
     double periods = 24; // H * D
     int gatewayRings = 1;
     double range = 2540.25; // Max range for downlink (!) coverage probability > 0.98 (with okumura)
@@ -56,6 +60,9 @@ main(int argc, char* argv[])
     /* Expose parameters to command line */
     {
         CommandLine cmd(__FILE__);
+        cmd.AddValue("tenant", "Chirpstack tenant name of this simulation", tenant);
+        cmd.AddValue("api", "Chirpstack REST API endpoint IP address", api);
+        cmd.AddValue("token", "Chirpstack API token (to be generated in Chirpstack UI)", token);
         cmd.AddValue("periods", "Number of periods to simulate (1 period = 1 hour)", periods);
         cmd.AddValue("rings", "Number of gateway rings in hexagonal topology", gatewayRings);
         cmd.AddValue("range", "Radius of the device allocation disk around a gateway)", range);
@@ -263,7 +270,9 @@ main(int argc, char* argv[])
     ///////////////////// Signal handling
     OnInterrupt([](int signal) { csHelper.CloseConnection(signal); });
     ///////////////////// Register tenant, gateways, and devices on the real server
-    csHelper.InitConnection(Ipv4Address("127.0.0.1"), 8090);
+    csHelper.SetTenant(tenant);
+    csHelper.SetToken(token);
+    csHelper.InitConnection(Ipv4Address(api.c_str()), 8090);
     csHelper.Register(NodeContainer(endDevices, gateways));
 
     // Initialize SF emulating the ADR algorithm, then add variance to path loss
