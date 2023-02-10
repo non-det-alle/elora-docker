@@ -1,0 +1,14 @@
+version: "0.1"
+
+services:
+  elora:
+    image: non-det-alle/elora:0.2
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - ./configuration.toml:/home/elora/configuration.toml
+      - ./data:/home/elora/data
+      - ./elora-example:/home/elora/ns-3-dev/scratch/elora
