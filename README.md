@@ -19,7 +19,7 @@ In addition to what is provided by the original LoRaWAN module, the following ch
 To use the simulator with docker you need to do/know the following:
 
 * Docker and docker compose need to be installed on your system
-* The ChirpStack server's components needs to be running somewhere reachable by the simulation via the network. In particular, a ChirpStack Gateway Bridge needs to be listening to port 1700 (default config) on the same machine you run the simulator image
+* The ChirpStack server's components needs to be running somewhere reachable by the simulation via the host network. In particular, a ChirpStack Gateway Bridge needs to be listening to port 1700 (default config) on the same host you use to run the simulator image
 * The simulator works as is with the default configuration of ChirpStark v4. It has been tested with the local [docker-compose installation](https://www.chirpstack.io/docs/getting-started/docker.html "Chirpstack docs: Quickstart Docker Compose") of the server. To run a distributed version of the setup, the IP address of the server's REST API needs to be changed accordingly in [`configuration.toml`](/configuration.toml), and a ChirpStark Gateway Bridge needs to remain co-located on the same machine of the ELoRa container
 * An authentification token needs to be generated in the server UI (API keys section), and needs to be copy-pasted in [`configuration.toml`](/configuration.toml)
 
