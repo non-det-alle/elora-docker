@@ -1,4 +1,4 @@
-# ELoRa: A end-to-end LoRaWAN emulator for the ChirpStack network server #
+# ELoRa: An end-to-end LoRaWAN emulator for the ChirpStack network server #
 
 This is a traffic emulator for the [Chirpstack server stack](https://www.chirpstack.io/ "ChirpStack, open-source LoRaWAN® Network Server"). 
 
