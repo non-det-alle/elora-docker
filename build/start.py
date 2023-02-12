@@ -2,10 +2,9 @@
 
 import toml
 import os
-from os import path, system
 
 configpath = os.environ['HOME'] + "/configuration.toml"
-assert path.exists(configpath), "Missing configuration.toml file in /home/elora"
+assert os.path.exists(configpath), "Missing configuration.toml file in /home/elora"
 configs = toml.load(configpath)
 
 ns3 = os.environ['NS3DIR'] + "/./ns3"
