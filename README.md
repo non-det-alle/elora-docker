@@ -25,11 +25,16 @@ To use the simulator with docker you need to do/know the following:
 
 ## Usage ##
 
-The image can be run with `docker compose up`.
+After cloning this repository, the emulator can be run with docker compose:
 
-More details on configurations and on the provided example's parameters can be found in [`configuration.toml`](/configuration.toml). You can develop your own simulation scenario by editing the default example file in the folder [`elora-example`](/elora-example/).
+```
+git clone https://github.com/non-det-alle/elora-docker.git
+cd elora-docker
+docker compose up
+```
+Values of the parameters exposed by the provided example can be changed by editing [`configuration.toml`](/configuration.toml) before running the emulation. You can develop your own simulation scenario, and change the exposed parameters by editing the default example file in the folder [`elora-example`](/elora-example/).
 
-We support the developement phylosophy of ns-3. Feel free to contribute by forking [the module repository](https://github.com/non-det-alle/lorawan.git). You can add your own repo as a git submodule in the [`build` directory](/build/), edit the [`Dockerfile`](/build/Dockerfile) accordingly, and run `docker compose build` in the project root directory.
+We support the developement phylosophy of ns-3. Feel free to contribute by forking [the module repository](https://github.com/non-det-alle/lorawan.git). You can add your own repo in the [`build` directory](/build/), edit the [`Dockerfile`](/build/Dockerfile) accordingly, and run `docker compose build` in the root directory.
 
 For more information on how to use the underlying LoRaWAN module refer to the [original module readme](https://github.com/signetlabdei/lorawan/blob/e8f7a21044418e92759d5c7c4bcab147cdaf05b3/README.md "LoRaWAN ns-3 module README").
 
