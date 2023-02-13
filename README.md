@@ -29,7 +29,7 @@ docker compose up
 
 Inside [`elora-example/`](/elora-example/) we provide an example scenario. Numerical parameters exposed by this example can be changed in [`configuration.toml`](/configuration.toml) before running the emulation. You can directly change the exposed parameters, or create an entirely new scenario, by editing the main ns-3 file [`elora-example.cc`](/elora-example/elora-example.cc). All this can be done without re-building the image: these files are loaded at runtime by Docker Compose.
 
-If you want to go a step further, and change the internal ns-3 libraries, you can add your own module repository in the [`build/`](/build/) directory, edit the [`Dockerfile`](/build/Dockerfile) accordingly, and run `docker compose build` from the rood directory of this repository.
+If you want to go a step further, and change the internal ns-3 libraries, you can add your own module repository in the [`build/`](/build/) directory, edit the [`Dockerfile`](/build/Dockerfile) accordingly, and run `docker compose build` from the root directory of this repository. Make sure you [init the ns-3 submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) in the [`build/`](/build/) directory.
 
 We support the developement phylosophy of ns-3. Feel free to contribute by forking [the module repository](https://github.com/non-det-alle/lorawan.git).
 
