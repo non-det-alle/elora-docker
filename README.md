@@ -12,10 +12,11 @@ ELoRa was developed by extending the [LoRaWAN module](https://github.com/signetl
 
 To use the emulator you need to do/know the following:
 
-* Your host system need to be running Linux and [Docker Compose](https://docs.docker.com/compose/) needs to be installed on your system
-* The [ChirpStack server infrastructure](https://www.chirpstack.io/docs/architecture.html) needs to be running somewhere reachable by the host network. Specifically, a ChirpStack Gateway Bridge needs to be listening to port 1700 (default configuration) of the same host you use to run the emulator image
+* Your host system must to be running Linux and [Docker Compose](https://docs.docker.com/compose/) must to be installed on your system
+* The [ChirpStack server infrastructure](https://www.chirpstack.io/docs/architecture.html) must to be running somewhere reachable by the host network
+* The simulator works with ChirpStark v4. It has been tested with a local [docker-compose installation](https://www.chirpstack.io/docs/getting-started/docker.html "Chirpstack docs: Quickstart Docker Compose") of the server 
 * An authentification token needs to be generated in the server UI (API keys section), and needs to be copy-pasted in [`configuration.toml`](/configuration.toml)
-* The simulator works with the default configuration of ChirpStark v4. It has been tested with a local [docker-compose installation](https://www.chirpstack.io/docs/getting-started/docker.html "Chirpstack docs: Quickstart Docker Compose") of the infrastructure. If you have a distributed deployment of ChirpStack, you need to change the IP address of the server's REST API endpoint in [`configuration.toml`](/configuration.toml)
+* If you have a distributed deployment of ChirpStack, you need to change the IP/port of the server's REST API endpoint in [`configuration.toml`](/configuration.toml), as well as the IP/port of the ChirpStack Gateway Bridge
 
 ## Usage ##
 
@@ -27,7 +28,7 @@ cd elora-docker
 docker compose up
 ```
 
-Inside [`elora-example/`](/elora-example/) we provide an example scenario. Numerical parameters exposed by this example can be changed in [`configuration.toml`](/configuration.toml) before running the emulation. You can directly change the exposed parameters, or create an entirely new scenario, by editing the main ns-3 file [`elora-example.cc`](/elora-example/elora-example.cc). All this can be done without re-building the image: these files are loaded at runtime by Docker Compose.
+Inside [`elora-example/`](/elora-example/) we provide an example scenario. Numerical parameters exposed by this example can be changed in [`configuration.toml`](/configuration.toml) before running the emulation. You can directly change the exposed parameters, or create an entirely new scenario, by editing the main ns-3 file [`elora-example.cc`](/elora-example/elora-example.cc). All this can be done without re-building the module; scenario files are loaded and built at runtime by Docker Compose.
 
 If you want to go a step further, and change the internal ns-3 libraries, you can add your own module repository in the [`build/`](/build/) directory, edit the [`Dockerfile`](/build/Dockerfile) accordingly, and run `docker compose build` from the root directory of this repository. Make sure you [init the ns-3 submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) in the [`build/`](/build/) directory.
 

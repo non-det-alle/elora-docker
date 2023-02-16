@@ -4,12 +4,12 @@ services:
   elora:
     image: nondetalle/elora:0.2
     build: ./build
-    network_mode: "host"
+    network_mode: "bridge"
     cap_add:
       - NET_ADMIN
     devices:
-      - /dev/net/tun:/dev/net/tun
+      - /dev/net/tun
     volumes:
       - ./configuration.toml:/home/elora/configuration.toml
-      - ./data:/home/elora/data
       - ./elora-example:/home/elora/ns-3-dev/scratch/elora
+      - ./data:/home/elora/data

@@ -44,8 +44,10 @@ main(int argc, char* argv[])
      ***************************/
 
     std::string tenant = "ELoRa";
-    std::string api = "127.0.0.1";
+    std::string apiAddr = "127.0.0.1";
+    uint16_t apiPort = 8090;
     std::string token = "";
+    uint16_t destPort = 1700;
 
     double periods = 24; // H * D
     int gatewayRings = 1;
@@ -61,8 +63,10 @@ main(int argc, char* argv[])
     {
         CommandLine cmd(__FILE__);
         cmd.AddValue("tenant", "Chirpstack tenant name of this simulation", tenant);
-        cmd.AddValue("api", "Chirpstack REST API endpoint IP address", api);
+        cmd.AddValue("apiAddr", "Chirpstack REST API endpoint IP address", apiAddr);
+        cmd.AddValue("apiPort", "Chirpstack REST API endpoint IP address", apiPort);
         cmd.AddValue("token", "Chirpstack API token (to be generated in Chirpstack UI)", token);
+        cmd.AddValue("destPort", "Port used by the Chirpstack Gateway Bridge", destPort);
         cmd.AddValue("periods", "Number of periods to simulate (1 period = 1 hour)", periods);
         cmd.AddValue("rings", "Number of gateway rings in hexagonal topology", gatewayRings);
         cmd.AddValue("range", "Radius of the device allocation disk around a gateway)", range);
@@ -242,7 +246,7 @@ main(int argc, char* argv[])
         // Install UDP forwarders in gateways
         UdpForwarderHelper forwarderHelper;
         forwarderHelper.SetAttribute("RemoteAddress", AddressValue(Ipv4Address("10.1.2.1")));
-        forwarderHelper.SetAttribute("RemotePort", UintegerValue(1700));
+        forwarderHelper.SetAttribute("RemotePort", UintegerValue(destPort));
         forwarderHelper.Install(gateways);
 
         // Install applications in EDs
@@ -266,13 +270,12 @@ main(int argc, char* argv[])
     /***************************
      *  Simulation and metrics *
      ***************************/
-
     ///////////////////// Signal handling
     OnInterrupt([](int signal) { csHelper.CloseConnection(signal); });
     ///////////////////// Register tenant, gateways, and devices on the real server
     csHelper.SetTenant(tenant);
     csHelper.SetToken(token);
-    csHelper.InitConnection(Ipv4Address(api.c_str()), 8090);
+    csHelper.InitConnection(apiAddr, apiPort);
     csHelper.Register(NodeContainer(endDevices, gateways));
 
     // Initialize SF emulating the ADR algorithm, then add variance to path loss

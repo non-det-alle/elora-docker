@@ -2,27 +2,28 @@
 
 import toml
 import os
+import subprocess as sp
+import signal
 
-configpath = os.environ['HOME'] + "/configuration.toml"
-assert os.path.exists(configpath), "Missing configuration.toml file in /home/elora"
+# Load configurations
+configpath = os.environ['HOME'] + '/configuration.toml'
 configs = toml.load(configpath)
 
-ns3 = os.environ['NS3DIR'] + "/./ns3"
-assert 'target' in configs, "Simulation target not specified in configuration.toml"
-target = configs['target']
-options = "--cwd " + os.environ['OUTPUT']
+# Define iptables rules
+dest = configs['destAddr']
+tap = configs['tap']
+sp.run(['iptables', '-t', 'nat', '-A', 'PREROUTING', '-i', tap,
+       '-p', 'udp', '-j', 'DNAT', '--to-destination', dest])
+sp.run(['iptables', '-t', 'nat', '-A', 'POSTROUTING', '-o', 'eth0',
+       '-p', 'udp', '-j', 'MASQUERADE', '--to-ports', '40000-50000'])
 
-command = ns3 + " run " + target + " " + options + " --"
-
-if 'args' in configs:
-    for p, v in configs['args'].items():
-        arg = " --" + p + "="
-        if isinstance(v, bool):
-            arg += str(int(v))
-        elif isinstance(v, str):
-            arg += "\"" + v + "\""
-        else:
-            arg += str(v)
-        command += arg
-
-os.system(command)
+# Run ns-3 simulation
+run = configs['run']
+ns3 = os.environ['NS3DIR'] + '/./ns3'
+target = run['target']
+options = ['--cwd', os.environ['OUTPUT']]
+args = ['--']
+if 'args' in run:
+    for p, v in run['args'].items():
+        args.append('--' + p + '=' + str(int(v) if isinstance(v, bool) else v))
+sp.run([ns3, 'run', target] + options + args)

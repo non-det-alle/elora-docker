@@ -33,6 +33,7 @@ RUN apk --no-cache add \
     ninja \
     python3 \
     # Required by elora
+    iptables \
     curl-dev \
     py3-toml && \
     # Configure ns-3 to only build lorawan and dependencies to save disk space
@@ -43,7 +44,7 @@ RUN apk --no-cache add \
     --enable-modules lorawan && \
     # Build ns3
     ${NS3DIR}/./ns3 build && \
-    # Setup home, data, and elora directories
+    # Setup home, data, ns-3-dev/scratch/elora directories
     mkdir -p "${HOME}/data" "${NS3DIR}/scratch/elora"
 
 # Configure container startup
