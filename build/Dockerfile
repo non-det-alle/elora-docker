@@ -37,11 +37,7 @@ RUN apk --no-cache add \
     curl-dev \
     py3-toml && \
     # Configure ns-3 to only build lorawan and dependencies to save disk space
-    ${NS3DIR}/./ns3 configure \
-    -d optimized \
-    --enable-logs \ 
-    --disable-warnings \
-    --enable-modules lorawan && \
+    ${NS3DIR}/./ns3 configure --enable-modules lorawan && \
     # Build ns3
     ${NS3DIR}/./ns3 build && \
     # Setup home, data, ns-3-dev/scratch/elora directories
