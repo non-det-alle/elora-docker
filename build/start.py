@@ -2,8 +2,7 @@
 
 import toml
 import os
-import subprocess as sp
-import signal
+import subprocess
 
 # Load configurations
 configpath = os.environ['HOME'] + '/configuration.toml'
@@ -11,11 +10,13 @@ configs = toml.load(configpath)
 
 # Define iptables rules
 dest = configs['destAddr']
+if dest == "127.0.0.1" or dest == "localhost":
+    dest = "172.17.0.1"
 tap = configs['tap']
-sp.run(['iptables', '-t', 'nat', '-A', 'PREROUTING', '-i', tap,
-       '-p', 'udp', '-j', 'DNAT', '--to-destination', dest])
-sp.run(['iptables', '-t', 'nat', '-A', 'POSTROUTING', '-o', 'eth0',
-       '-p', 'udp', '-j', 'MASQUERADE', '--to-ports', '40000-50000'])
+subprocess.run(['iptables', '-t', 'nat', '-A', 'PREROUTING', '-i', tap,
+                '-p', 'udp', '-j', 'DNAT', '--to-destination', dest])
+subprocess.run(['iptables', '-t', 'nat', '-A', 'POSTROUTING', '-o', 'eth0',
+                '-p', 'udp', '-j', 'MASQUERADE', '--to-ports', '40000-50000'])
 
 # Run ns-3 simulation
 run = configs['run']
@@ -26,4 +27,5 @@ args = ['--']
 if 'args' in run:
     for p, v in run['args'].items():
         args.append('--' + p + '=' + str(int(v) if isinstance(v, bool) else v))
-sp.run([ns3, 'run', target] + options + args)
+subprocess.run([ns3, 'run', target] + options + args,
+               stdin=subprocess.PIPE)

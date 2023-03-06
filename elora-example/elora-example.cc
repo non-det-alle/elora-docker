@@ -219,9 +219,9 @@ main(int argc, char* argv[])
         phyHelper.SetChannel(channel);
 
         // Create a LoraDeviceAddressGenerator
-        uint8_t nwkId = 54;
-        uint32_t nwkAddr = 1864;
-        auto addrGen = CreateObject<LoraDeviceAddressGenerator>(nwkId, nwkAddr);
+        /////////////////// Enables full parallelism between ELoRa instances
+        uint8_t nwkId = RngSeedManager::GetRun();
+        auto addrGen = CreateObject<LoraDeviceAddressGenerator>(nwkId);
 
         // Mac layer settings
         macHelper.SetRegion(LorawanMacHelper::EU);
@@ -274,8 +274,7 @@ main(int argc, char* argv[])
     OnInterrupt([](int signal) { csHelper.CloseConnection(signal); });
     ///////////////////// Register tenant, gateways, and devices on the real server
     csHelper.SetTenant(tenant);
-    csHelper.SetToken(token);
-    csHelper.InitConnection(apiAddr, apiPort);
+    csHelper.InitConnection(apiAddr, apiPort, token);
     csHelper.Register(NodeContainer(endDevices, gateways));
 
     // Initialize SF emulating the ADR algorithm, then add variance to path loss

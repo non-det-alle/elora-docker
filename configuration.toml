@@ -9,12 +9,11 @@
 #
 
 # ChirpStack gateway bridge address
-# (Leave it like this if it is hosted locally in another container)
-destAddr = "172.17.0.1"
+destAddr = "localhost"
 
 # Name of the tap interface that you will create with ns-3 
 #
-# These setting is already assigned elsewere in your simulation .cc files
+# These setting must reflect the name of the tap created by your simulation
 # (needed here to link the interface created by ns-3 with the outside)
 #
 tap = "ns3-tap"
@@ -27,6 +26,14 @@ target = "elora-example"
 
 # Arguments to pass to the simulation.
 [run.args]
+
+# Seed to use in the random generation engine of ns-3
+# 
+# This also allows to run multiple ELoRa instances in parallel,
+# with the additional condition of RngRun_1 != RngRun_2 mod(128)
+# as the NetworkId field of LoRaWAN addresses is 7 bits. 
+# (this number will be appended to the tenant name)
+RngRun = 0
 
 # These are specific to the implementation (elora-example.cc in this case)
 #
@@ -90,6 +97,3 @@ file = true
 # Whether to enable detailed logs on the devices' MAC layer,
 # and simple logs on UDP traffic in gateways
 log = true
-
-# Seed to use in the random generation engine of ns-3
-RngRun = 0
