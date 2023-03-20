@@ -1,6 +1,6 @@
 [submodule "build/ns-3-dev"]
 	path = build/ns-3-dev
 	url = https://gitlab.com/non-det-alle/ns-3-dev.git
-[submodule "build/lorawan"]
-	path = build/lorawan
-	url = https://github.com/non-det-alle/lorawan.git
+[submodule "build/elora"]
+	path = build/elora
+	url = https://github.com/non-det-alle/elora.git

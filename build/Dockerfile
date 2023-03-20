@@ -16,7 +16,7 @@ ENV HOME="/home/elora" \
 
 # Copy ns-3 and elora emulator code
 COPY ns-3-dev ${NS3DIR}
-COPY lorawan ${NS3DIR}/src/lorawan
+COPY elora ${NS3DIR}/src/lorawan
 
 # Install OS dependencies, modified ns-3, and elora
 RUN apk --no-cache add \
@@ -40,8 +40,8 @@ RUN apk --no-cache add \
     ${NS3DIR}/./ns3 configure --enable-modules lorawan && \
     # Build ns3
     ${NS3DIR}/./ns3 build && \
-    # Setup home, data, ns-3-dev/scratch/elora directories
-    mkdir -p "${HOME}/data" "${NS3DIR}/scratch/elora"
+    # Setup home, data, ns-3-dev/scratch/elora-example directories
+    mkdir -p "${HOME}/data" "${NS3DIR}/scratch/elora-example"
 
 # Configure container startup
 ENTRYPOINT ["tini", "-g", "--"]

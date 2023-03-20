@@ -33,7 +33,7 @@ target = "elora-example"
 # with the additional condition of RngRun_1 != RngRun_2 mod(128)
 # as the NetworkId field of LoRaWAN addresses is 7 bits. 
 # (this number will be appended to the tenant name)
-RngRun = 0
+RngRun = 1
 
 # These are specific to the implementation (elora-example.cc in this case)
 #

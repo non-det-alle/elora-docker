@@ -11,5 +11,5 @@ services:
       - /dev/net/tun
     volumes:
       - ./configuration.toml:/home/elora/configuration.toml
-      - ./elora-example:/home/elora/ns-3-dev/scratch/elora
+      - ./elora-example:/home/elora/ns-3-dev/scratch/elora-example
       - ./data:/home/elora/data
