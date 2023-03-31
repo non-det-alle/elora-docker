@@ -93,7 +93,7 @@ OnInterrupt(sighandler_t action)
     std::signal(SIGFPE, action);
 }
 
-std::vector<LoraHelper::TraceLevel>
+std::vector<LorawanHelper::TraceLevel>
 ParseTraceLevels(std::string s)
 {
     std::regex rx("PKT|DEV|SF|GW|NET|\\{((PKT|DEV|SF|GW|NET),)*(PKT|DEV|SF|GW|NET)\\}");
@@ -106,7 +106,7 @@ ParseTraceLevels(std::string s)
     s.erase(std::remove(s.begin(), s.end(), '{'), s.end());
     s.erase(std::remove(s.begin(), s.end(), '}'), s.end());
 
-    std::vector<LoraHelper::TraceLevel> out;
+    std::vector<LorawanHelper::TraceLevel> out;
 
     std::stringstream ss(s);
     while (ss.good())

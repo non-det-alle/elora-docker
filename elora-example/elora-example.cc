@@ -19,7 +19,7 @@
 
 // lorawan imports
 #include "ns3/hex-grid-position-allocator.h"
-#include "ns3/lora-helper.h"
+#include "ns3/lorawan-helper.h"
 #include "ns3/periodic-sender-helper.h"
 #include "ns3/range-position-allocator.h"
 #include "ns3/udp-forwarder-helper.h"
@@ -84,8 +84,10 @@ main(int argc, char* argv[])
     ///////////////// Real-time operation, necessary to interact with the outside world.
     GlobalValue::Bind("SimulatorImplementationType", StringValue("ns3::RealtimeSimulatorImpl"));
     GlobalValue::Bind("ChecksumEnabled", BooleanValue(true));
-    Config::SetDefault("ns3::BaseEndDeviceLorawanMac::EnableCryptography", BooleanValue(true));
     Config::SetDefault("ns3::BaseEndDeviceLorawanMac::ADRBackoff", BooleanValue(true));
+    Config::SetDefault("ns3::BaseEndDeviceLorawanMac::EnableCryptography", BooleanValue(true));
+    ///////////////// Needed to manage the variance introduced by real world interaction
+    Config::SetDefault("ns3::ClassAEndDeviceLorawanMac::RecvWinSymb", UintegerValue(16));
 
     /* Logging options */
     if (log)
@@ -210,7 +212,7 @@ main(int argc, char* argv[])
     tapBridge.Install(networkServer, networkServer->GetDevice(0));
 
     /* Radio side (between end devicees and gateways) */
-    LoraHelper helper;
+    LorawanHelper helper;
     LorawanMacHelper macHelper;
     NetDeviceContainer gwNetDev;
     {

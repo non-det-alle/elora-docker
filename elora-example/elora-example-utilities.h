@@ -2,7 +2,7 @@
  * Set of utilities to keep main example files more clean.
  */
 
-#include "ns3/lora-helper.h"
+#include "ns3/lorawan-helper.h"
 #include "ns3/lora-interference-helper.h"
 
 #include <csignal>
@@ -59,14 +59,14 @@ void OnInterrupt(sighandler_t action);
 /**
  * Granularities of the tracing system
  */
-const std::unordered_map<std::string, LoraHelper::TraceLevel> traceLevelMap = {
-    {"PKT", LoraHelper::PKT},
-    {"DEV", LoraHelper::DEV},
-    {"SF", LoraHelper::SF},
-    {"GW", LoraHelper::GW},
-    {"NET", LoraHelper::NET}};
+const std::unordered_map<std::string, LorawanHelper::TraceLevel> traceLevelMap = {
+    {"PKT", LorawanHelper::PKT},
+    {"DEV", LorawanHelper::DEV},
+    {"SF", LorawanHelper::SF},
+    {"GW", LorawanHelper::GW},
+    {"NET", LorawanHelper::NET}};
 
-std::vector<LoraHelper::TraceLevel> ParseTraceLevels(std::string s);
+std::vector<LorawanHelper::TraceLevel> ParseTraceLevels(std::string s);
 
 const std::map<EndDeviceLoraPhy::State, std::string> stateMap = {
     {EndDeviceLoraPhy::State::SLEEP, "SLEEP"},
