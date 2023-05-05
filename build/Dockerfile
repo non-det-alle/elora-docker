@@ -40,7 +40,10 @@ RUN apk --no-cache add \
     # Apply patch to ns-3 to support libcurl
     patch -p1 -d ${NS3DIR} < ${NS3DIR}/contrib/lorawan/ns-3-dev.patch && \
     # Configure ns-3 to only build lorawan and dependencies to save disk space
-    ${NS3DIR}/./ns3 configure --enable-modules lorawan && \
+    ${NS3DIR}/./ns3 configure \
+        --build-profile optimized \
+        --enable-modules lorawan \
+        --disable-warnings && \
     # Build ns3
     ${NS3DIR}/./ns3 build && \
     # Setup home, data, ns-3-dev/scratch/elora-example directories
