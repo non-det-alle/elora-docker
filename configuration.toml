@@ -93,7 +93,3 @@ test = true
 
 # Whether to enable .pcap tracing on gateways
 file = true
-
-# Whether to enable detailed logs on the devices' MAC layer,
-# and simple logs on UDP traffic in gateways
-log = true
