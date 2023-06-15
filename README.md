@@ -39,3 +39,6 @@ For more information on how to use the underlying LoRaWAN module refer to the [o
 ## Getting help ##
 
 If you need any help, feel free to open an issue here or on the [module repository](https://github.com/non-det-alle/elora).
+
+## Cite us ##
+[A. Aimi, S. Rovedakis, F. Guillemin, and S. Secci, “ELoRa: End-to-end Emulation of Massive IoT LoRaWAN Infrastructures,” 2023 IEEE/IFIP Network Operations and Management Symposium (NOMS), May 2023, Miami, FL, United States.](https://hal.science/hal-04025834)
