@@ -15,16 +15,6 @@ namespace ns3
 {
 
 /**
- * Clusters info (% devices, PDR required)
- */
-using cluster_t = std::vector<std::pair<double, double>>;
-
-/**
- * Parse clusters' info from string
- */
-cluster_t ParseClusterInfo(std::string s);
-
-/**
  * \brief Computes total deployment area
  *
  * Computes total deployment area in range of gateways placed with

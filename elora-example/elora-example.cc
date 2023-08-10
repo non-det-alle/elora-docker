@@ -36,8 +36,7 @@ NS_LOG_COMPONENT_DEFINE("EloraExample");
 /* Global declaration of connection helper for signal handling */
 ChirpstackHelper csHelper;
 
-int
-main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     /***************************
      *  Simulation parameters  *
@@ -136,7 +135,8 @@ main(int argc, char* argv[])
      *  Position & mobility  *
      *************************/
 
-    MobilityHelper mobilityEd, mobilityGw;
+    MobilityHelper mobilityEd;
+    MobilityHelper mobilityGw;
     Ptr<RangePositionAllocator> rangeAllocator;
     {
         // Gateway mobility
@@ -213,7 +213,6 @@ main(int argc, char* argv[])
 
     /* Radio side (between end devicees and gateways) */
     LorawanHelper helper;
-    LorawanMacHelper macHelper;
     NetDeviceContainer gwNetDev;
     {
         // Physiscal layer settings
@@ -227,6 +226,7 @@ main(int argc, char* argv[])
         auto addrGen = CreateObject<LoraDeviceAddressGenerator>(nwkId);
 
         // Mac layer settings
+        LorawanMacHelper macHelper;
         macHelper.SetRegion(LorawanMacHelper::EU);
         macHelper.SetAddressGenerator(addrGen);
 
@@ -284,9 +284,12 @@ main(int argc, char* argv[])
     // Initialize SF emulating the ADR algorithm, then add variance to path loss
     std::vector<int> devPerSF(1, nDevices);
     if (initializeSF)
-        devPerSF = macHelper.SetSpreadingFactorsUp(endDevices, gateways, channel);
+    {
+        devPerSF = LorawanMacHelper::SetSpreadingFactorsUp(endDevices, gateways, channel);
+    }
     loss->SetNext(rayleigh);
 
+    std::cout << std::endl << "Running emulation..." << std::endl;
 #ifdef NS3_LOG_ENABLE
     // Print current configuration
     PrintConfigSetup(nDevices, range, gatewayRings, devPerSF);
@@ -298,7 +301,9 @@ main(int argc, char* argv[])
         MakeCallback(&OnStateChange));
 
     if (file)
+    {
         helper.EnablePcap("lora", gwNetDev);
+    }
 
     Simulator::Stop(Hours(1) * periods);
 

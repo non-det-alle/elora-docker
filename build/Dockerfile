@@ -16,7 +16,7 @@ ENV HOME="/home/elora" \
 
 # Copy ns-3 and elora emulator code
 COPY ns-3-dev ${NS3DIR}
-COPY elora ${NS3DIR}/contrib/lorawan
+COPY elora ${NS3DIR}/contrib/elora
 
 # Install OS dependencies, modified ns-3, and elora
 RUN apk --no-cache add \
@@ -38,11 +38,11 @@ RUN apk --no-cache add \
     curl-dev \
     py3-toml && \
     # Apply patch to ns-3 to support libcurl
-    patch -p1 -d ${NS3DIR} < ${NS3DIR}/contrib/lorawan/ns-3-dev.patch && \
+    patch -p1 -d ${NS3DIR} < ${NS3DIR}/contrib/elora/ns-3-dev.patch && \
     # Configure ns-3 to only build lorawan and dependencies to save disk space
     ${NS3DIR}/./ns3 configure \
         --build-profile optimized \
-        --enable-modules lorawan \
+        --enable-modules elora \
         --disable-warnings && \
     # Build ns3
     ${NS3DIR}/./ns3 build && \

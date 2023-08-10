@@ -11,42 +11,18 @@ namespace ns3
 
 NS_LOG_COMPONENT_DEFINE("EloraUtilities");
 
-cluster_t
-ParseClusterInfo(std::string s)
-{
-    std::regex rx("\\{\\{[0-9]+(\\.[0-9]+)?,0*(1(\\.0+)?|0|\\.[0-9]+)\\}"
-                  "(,\\{[0-9]+(\\.[0-9]+)?,0*(1(\\.0+)?|0|\\.[0-9]+)\\})*\\}");
-    NS_ASSERT_MSG(std::regex_match(s, rx),
-                  "Cluster vector " << s
-                                    << " ill formatted. "
-                                       "Syntax (no spaces): {{double > 0,double [0,1]},...}");
-
-    s.erase(std::remove(s.begin(), s.end(), '{'), s.end());
-    s.erase(std::remove(s.begin(), s.end(), '}'), s.end());
-
-    cluster_t clusterInfo;
-    double share = 0;
-    double pdr = 0;
-
-    std::string d = ",";
-    size_t pos = 0;
-    double tot = 0;
-    while ((pos = s.find(d)) != std::string::npos)
-    {
-        share = std::stod(s.substr(0, pos));
-        s.erase(0, pos + d.length());
-        tot += share;
-
-        pos = s.find(d);
-        pdr = std::stod(s.substr(0, pos));
-        s.erase(0, pos + d.length());
-
-        clusterInfo.push_back({share, pdr});
-    }
-    NS_ASSERT_MSG(tot == 100.0, "Total share among clusters must be 100%.");
-    return clusterInfo;
-}
-
+/**
+ * \brief Computes total deployment area
+ *
+ * Computes total deployment area in range of gateways placed with
+ * complete radial hexagonal tiling. This assumes that the maximum
+ * range devices are placed from a gateway is the side of hexagons.
+ *
+ * \param range Maximum device range from center of a gateway [m]
+ * \param rings Number of rings of hexagons (central gateway = first ring)
+ *
+ * \return Deployment area [km^2]
+ */
 double
 ComputeArea(double range, int rings)
 {
@@ -82,15 +58,18 @@ PrintConfigSetup(int nDevs, double range, int rings, std::vector<int>& devPerSF)
     std::cout << ss.str();
 }
 
+/**
+ * Setup action on interrupt
+ */
 void
 OnInterrupt(sighandler_t action)
 {
-    std::signal(SIGTERM, action);
-    std::signal(SIGSEGV, action);
     std::signal(SIGINT, action);
+    std::signal(SIGSEGV, action);
     std::signal(SIGILL, action);
     std::signal(SIGABRT, action);
     std::signal(SIGFPE, action);
+    std::signal(SIGTERM, action);
 }
 
 std::vector<LorawanHelper::TraceLevel>
