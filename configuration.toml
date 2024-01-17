@@ -51,7 +51,7 @@ apiAddr = "172.17.0.1"
 apiPort = 8090
 
 # Chirpstack API token (this needs to be generated in Chirpstack and copy-pasted here)
-token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjaGlycHN0YWNrIiwiaXNzIjoiY2hpcnBzdGFjayIsInN1YiI6IjZlMjQ4NjljLWQxMjItNDZkOS04NzE0LTM5Yzc4Nzg4OTRhZCIsInR5cCI6ImtleSJ9.IB20o6Jrcwj5qZ9mPEuthzzqMyc3YNSl8by_ZXrjqhw"
+token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjaGlycHN0YWNrIiwiaXNzIjoiY2hpcnBzdGFjayIsInN1YiI6ImQ2ZGQ4OGFiLTNmN2MtNGJlZi1hZWU1LWVmZGRkNWEyZmE3MSIsInR5cCI6ImtleSJ9.UJmVOv2Chbh1T5xjUSBF9jZuGmmLg3xu7Dg_77otxkA"
 
 # Port used by the ChirpStack Gateway Bridge at the destination 
 destPort = 1700
