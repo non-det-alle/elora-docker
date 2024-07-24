@@ -93,3 +93,6 @@ test = true
 
 # Whether to enable .pcap tracing on gateways
 file = true
+
+# Enable logging to std output
+log = true

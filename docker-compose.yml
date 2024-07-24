@@ -1,8 +1,8 @@
-version: "0.1"
+version: "0.1.0"
 
 services:
   elora:
-    image: nondetalle/elora:0.3
+    image: nondetalle/elora:0.1.1
     build: ./build
     network_mode: "bridge"
     cap_add:

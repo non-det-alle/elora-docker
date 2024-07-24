@@ -85,6 +85,8 @@ int main(int argc, char *argv[])
     GlobalValue::Bind("ChecksumEnabled", BooleanValue(true));
     Config::SetDefault("ns3::BaseEndDeviceLorawanMac::ADRBackoff", BooleanValue(true));
     Config::SetDefault("ns3::BaseEndDeviceLorawanMac::EnableCryptography", BooleanValue(true));
+    Config::SetDefault("ns3::BaseEndDeviceLorawanMac::FType",
+                       EnumValue(LorawanMacHeader::CONFIRMED_DATA_UP));
     ///////////////// Needed to manage the variance introduced by real world interaction
     Config::SetDefault("ns3::ClassAEndDeviceLorawanMac::RecvWinSymb", UintegerValue(16));
 
@@ -275,7 +277,8 @@ int main(int argc, char *argv[])
      ***************************/
 
     ///////////////////// Signal handling
-    OnInterrupt([](int signal) { csHelper.CloseConnection(signal); });
+    OnInterrupt([](int signal)
+                { csHelper.CloseConnection(signal); });
     ///////////////////// Register tenant, gateways, and devices on the real server
     csHelper.SetTenant(tenant);
     csHelper.InitConnection(apiAddr, apiPort, token);
@@ -289,7 +292,8 @@ int main(int argc, char *argv[])
     }
     loss->SetNext(rayleigh);
 
-    std::cout << std::endl << "Running emulation..." << std::endl;
+    std::cout << std::endl
+              << "Running emulation..." << std::endl;
 #ifdef NS3_LOG_ENABLE
     // Print current configuration
     PrintConfigSetup(nDevices, range, gatewayRings, devPerSF);

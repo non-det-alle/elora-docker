@@ -41,9 +41,9 @@ RUN apk --no-cache add \
     patch -p1 -d ${NS3DIR} < ${NS3DIR}/contrib/elora/ns-3-dev.patch && \
     # Configure ns-3 to only build lorawan and dependencies to save disk space
     ${NS3DIR}/./ns3 configure \
-        --build-profile optimized \
-        --enable-modules elora \
-        --disable-warnings && \
+    --build-profile optimized \
+    --enable-modules elora \
+    --enable-logs && \
     # Build ns3
     ${NS3DIR}/./ns3 build && \
     # Setup home, data, ns-3-dev/scratch/elora-example directories

@@ -1,5 +1,5 @@
 /*
- * Set of utilities to keep main example files more clean.
+ * Set of utilities to keep top example files more clean.
  */
 
 #include "ns3/lorawan-helper.h"
