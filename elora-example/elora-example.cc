@@ -36,7 +36,8 @@ NS_LOG_COMPONENT_DEFINE("EloraExample");
 /* Global declaration of connection helper for signal handling */
 ChirpstackHelper csHelper;
 
-int main(int argc, char *argv[])
+int
+main(int argc, char* argv[])
 {
     /***************************
      *  Simulation parameters  *
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
     std::string tenant = "ELoRa";
     std::string apiAddr = "127.0.0.1";
     uint16_t apiPort = 8090;
-    std::string token = "";
+    std::string token = "...";
     uint16_t destPort = 1700;
 
     double periods = 24; // H * D
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
         cmd.AddValue("file", "Whether to enable .pcap tracing on gateways", file);
         cmd.AddValue("log", "Whether to enable logs", log);
         cmd.Parse(argc, argv);
+        NS_ABORT_MSG_IF(token == "...", "Please provide an auth token for the ChirpStack API");
     }
 
     /* Apply global configurations */
@@ -95,6 +97,7 @@ int main(int argc, char *argv[])
     {
         //!> Requirement: build ns3 with debug option
         LogComponentEnable("UdpForwarder", LOG_LEVEL_DEBUG);
+        LogComponentEnable("ChirpstackHelper", LOG_LEVEL_DEBUG);
         LogComponentEnable("ClassAEndDeviceLorawanMac", LOG_LEVEL_INFO);
         LogComponentEnable("BaseEndDeviceLorawanMac", LOG_LEVEL_INFO);
         // LogComponentEnable ("LoraFrameHeader", LOG_LEVEL_INFO);
@@ -277,8 +280,7 @@ int main(int argc, char *argv[])
      ***************************/
 
     ///////////////////// Signal handling
-    OnInterrupt([](int signal)
-                { csHelper.CloseConnection(signal); });
+    OnInterrupt([](int signal) { csHelper.CloseConnection(signal); });
     ///////////////////// Register tenant, gateways, and devices on the real server
     csHelper.SetTenant(tenant);
     csHelper.InitConnection(apiAddr, apiPort, token);
@@ -292,8 +294,7 @@ int main(int argc, char *argv[])
     }
     loss->SetNext(rayleigh);
 
-    std::cout << std::endl
-              << "Running emulation..." << std::endl;
+    std::cout << std::endl << "Running emulation..." << std::endl;
 #ifdef NS3_LOG_ENABLE
     // Print current configuration
     PrintConfigSetup(nDevices, range, gatewayRings, devPerSF);
