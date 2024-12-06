@@ -4,7 +4,6 @@ services:
     build: ./build
     network_mode: bridge
     cap_add: [NET_ADMIN]
-    devices: [/dev/net/tun]
     volumes:
       - ./configuration.toml:/home/elora/configuration.toml
       - ./elora-example:/home/elora/ns-3-dev/scratch/elora-example

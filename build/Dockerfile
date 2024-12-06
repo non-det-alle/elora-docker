@@ -47,8 +47,7 @@ RUN apk --no-cache add \
     mkdir -p "${HOME}/data" "${NS3DIR}/scratch/elora-example"
 
 # Configure container startup
-ENTRYPOINT ["tini", "-g", "--"]
-CMD ["start.py"]
+ENTRYPOINT ["/sbin/tini", "-g", "--", "start.py"]
 
 # Copy other files as late as possible to avoid cache busting
 COPY start.py /usr/local/bin/

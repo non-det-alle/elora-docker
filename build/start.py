@@ -5,6 +5,11 @@ import toml, os, subprocess, signal
 # Load configuration
 config = toml.load(os.environ["HOME"] + "/configuration.toml")
 
+# Create tap device
+subprocess.run(["mkdir", "-p", "/dev/net"])
+subprocess.run(["mknod", "/dev/net/tun", "c", "10", "200"])
+subprocess.run(["chmod", "600", "/dev/net/tun"])
+
 # Create iptables rules
 dest = config["destAddr"]
 if dest == "127.0.0.1" or dest == "localhost":
@@ -20,7 +25,7 @@ subprocess.run(
     + ["-j", "MASQUERADE", "--to-ports", "40000-50000"]
 )
 
-# Run ns-3 simulation
+# Build ns-3 command
 ns3_run = [os.environ["NS3DIR"] + "/./ns3", "run"]
 options = ["--cwd", os.environ["OUTPUT"]]
 target = [config["run"]["target"]]
@@ -30,6 +35,8 @@ if "args" in config["run"] and config["run"]["args"]:
         if isinstance(v, bool):
             v = int(v)
         target.append("--" + p + "=" + str(v))
+
+# Run ns-3 simulation
 with subprocess.Popen(ns3_run + options + target) as proc:
 
     def handle(signum, _):
