@@ -1,6 +1,6 @@
 services:
   elora:
-    image: nondetalle/elora:0.2.1
+    image: nondetalle/elora:0.2.2
     build: ./build
     network_mode: bridge
     cap_add: [NET_ADMIN]

@@ -2,8 +2,8 @@
  * Set of utilities to keep top example files more clean.
  */
 
-#include "ns3/lorawan-helper.h"
 #include "ns3/lora-interference-helper.h"
+#include "ns3/lorawan-helper.h"
 
 #include <csignal>
 #include <vector>
@@ -40,6 +40,18 @@ const std::unordered_map<std::string, LoraInterferenceHelper::IsolationMatrix> s
  * Print initial configuration
  */
 void PrintConfigSetup(int nDevs, double range, int rings, std::vector<int>& devPerSF);
+
+static const int signals[] = {
+    SIGHUP,
+    SIGINT,
+    SIGQUIT,
+    SIGILL,
+    SIGABRT,
+    SIGFPE,
+    SIGSEGV,
+    SIGPIPE,
+    SIGTERM,
+};
 
 /**
  * Setup action on interrupt

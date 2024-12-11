@@ -97,7 +97,7 @@ main(int argc, char* argv[])
     {
         //!> Requirement: build ns3 with debug option
         LogComponentEnable("UdpForwarder", LOG_LEVEL_DEBUG);
-        LogComponentEnable("ChirpstackHelper", LOG_LEVEL_DEBUG);
+        // LogComponentEnable("ChirpstackHelper", LOG_LEVEL_DEBUG);
         LogComponentEnable("ClassAEndDeviceLorawanMac", LOG_LEVEL_INFO);
         LogComponentEnable("BaseEndDeviceLorawanMac", LOG_LEVEL_INFO);
         // LogComponentEnable ("LoraFrameHeader", LOG_LEVEL_INFO);
@@ -280,7 +280,11 @@ main(int argc, char* argv[])
      ***************************/
 
     ///////////////////// Signal handling
-    OnInterrupt([](int signal) { csHelper.CloseConnection(signal); });
+    OnInterrupt([](int signal) {
+        csHelper.CloseConnection(signal);
+        OnInterrupt(SIG_DFL); // avoid multiple executions
+        exit(0);
+    });
     ///////////////////// Register tenant, gateways, and devices on the real server
     csHelper.SetTenant(tenant);
     csHelper.InitConnection(apiAddr, apiPort, token);
@@ -294,12 +298,9 @@ main(int argc, char* argv[])
     }
     loss->SetNext(rayleigh);
 
-    std::cout << std::endl << "Running emulation..." << std::endl;
-#ifdef NS3_LOG_ENABLE
     // Print current configuration
     PrintConfigSetup(nDevices, range, gatewayRings, devPerSF);
     helper.EnableSimulationTimePrinting(Seconds(3600));
-#endif // NS3_LOG_ENABLE
 
     Config::ConnectWithoutContext(
         "/NodeList/*/DeviceList/0/$ns3::LoraNetDevice/Phy/$ns3::EndDeviceLoraPhy/EndDeviceState",
