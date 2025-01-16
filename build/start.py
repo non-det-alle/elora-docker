@@ -6,6 +6,7 @@ from subprocess import run, Popen, check_output, CalledProcessError
 from signal import SIGTERM, signal
 from re import search
 from sys import exit
+from time import sleep
 
 
 def get_ip_from_getent(service_name):
@@ -112,10 +113,16 @@ except KeyError as e:
 # Run ns-3 simulation
 try:
     p = Popen(ns3_run + options + target)
+
     # Propagate SIGTERM from docker stop
-    signal(SIGTERM, lambda: p.send_signal(SIGTERM))
+    def propagate_and_sleep(*_):
+        p.send_signal(SIGTERM)
+        sleep(0.1)
+
+    signal(SIGTERM, propagate_and_sleep)
     p.wait()
 except KeyboardInterrupt:
+    # Ctrl-C on docker run ends up here.
     exit(0)
 except CalledProcessError as e:
     print(f"Error running ns-3 simulation: {e}")
