@@ -51,9 +51,6 @@ apiAddr = "172.17.0.1"
 # Chirpstack REST API endpoint port
 apiPort = 8090
 
-# Chirpstack API token (this needs to be generated in Chirpstack and copy-pasted here)
-token = "..."
-
 # Port used by the ChirpStack Gateway Bridge at the destination 
 destPort = 1700
 
