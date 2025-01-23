@@ -34,21 +34,13 @@ try:
     config_path = path.join(environ.get("HOME", ""), "configuration.toml")
     if not path.exists(config_path):
         raise FileNotFoundError(f"Configuration file not found at {config_path}")
-
     config = load(config_path)
-
     # Validate required keys
-    if (
-        "destAddr" not in config
-        or "tap" not in config
-        or "run" not in config
-        or "target" not in config["run"]
-    ):
-        raise KeyError("destAddr, tap or run.target")
-
-    dest_addr = config["destAddr"]
-    tap_name = config["tap"]
-    target_name = config["run"]["target"]
+    for k in ["destAddr", "tap", "run"]:
+        if k not in config:
+            raise KeyError(k)
+    if "target" not in config["run"]:
+        raise KeyError("run.target")
 except FileNotFoundError as fnf_error:
     print(f"Error: {fnf_error}")
     exit(1)
@@ -61,6 +53,10 @@ except KeyError as key_error:
 except Exception as e:
     print(f"Unexpected error while loading configuration: {e}")
     exit(1)
+
+dest_addr = config["destAddr"]
+tap_name = config["tap"]
+target_name = config["run"]["target"]
 
 # Resolve destination DNS
 try:
@@ -99,7 +95,6 @@ try:
     ns3_run = [environ["NS3DIR"] + "/./ns3", "run"]
     options = ["--cwd", environ["OUTPUT"]]
     target = [target_name]
-
     if "args" in config["run"] and config["run"]["args"]:
         target.append("--")
         for p, v in config["run"]["args"].items():
