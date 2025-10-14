@@ -1,6 +1,6 @@
-# Alpine 3.17
-# https://hub.docker.com/_/alpine/tags?page=1&name=3.17
-FROM alpine:3.17
+# Alpine 3.22
+# https://hub.docker.com/_/alpine/tags?page=1&name=3.22
+FROM alpine:3.22
 
 LABEL maintainer="Alessandro Aimi <alleaimi95@gmail.com>"
 LABEL Description="Docker image for the ELoRa network emulator"
