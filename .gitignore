@@ -1,6 +1,8 @@
 # hidden files, exluding gitattributes
 .*
-!.gitattributes
+!.gitignore
+!.github/
+!.vscode/
 
 # data folder
 /data
