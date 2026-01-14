@@ -38,7 +38,7 @@ RUN apk --no-cache add \
     py3-toml && \
     # Configure ns-3 to only build lorawan and dependencies to save disk space
     ${NS3DIR}/./ns3 configure \
-    --build-profile optimized \
+    --build-profile release \
     --enable-modules "elora;tap-bridge;csma" \
     --enable-logs && \
     # Build ns3
